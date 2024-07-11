@@ -2,6 +2,7 @@ from RealESRGAN import RealESRGAN
 from PIL import Image
 import numpy as np
 import torch
+import asyncio
 
 #@title Upload and upscale images or .tar archives
 import os
@@ -68,23 +69,21 @@ def process_tar(path_to_tar):
     print(f'Finished! Archive saved to {result_tar_path}')
 
 def process_input(filename):
-    if tarfile.is_tarfile(filename):
-        process_tar(filename)
-    else:
-        result_image_path = os.path.join(RESULT_FOLDER,os.path.basename(filename))
-        image = Image.open(filename).convert('RGB')
-        sr_image = model.predict(np.array(image))
-        sr_image.save(result_image_path)
-        print(f'Finished! Image saved to {result_image_path}')
+    # if tarfile.is_tarfile(filename):
+        # process_tar(filename)
+    # else:
+    result_image_path = os.path.join(RESULT_FOLDER,os.path.basename(filename))
+    image = Image.open(filename).convert('RGB')
+    sr_image = model.predict(np.array(image))
+    sr_image.save(result_image_path)
+    print(f'Finished! Image saved to {result_image_path}')
     return result_image_path
 
-# upload files
-#uploaded = files.upload()
 
-img_list = os.listdir(UPLOAD_FOLDER)
-#print('IMGAGES', IMGAGES)
 if __name__ == '__main__':
+    img_list = os.listdir(UPLOAD_FOLDER)
     for filename in img_list:
+        print(filename)
         img_path = os.path.join(UPLOAD_FOLDER, filename)
         print('Processing:', img_path)
         process_input(img_path)
