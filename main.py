@@ -46,38 +46,9 @@ async def process_photo(message: Message):
     await bot.download(file=message.photo[-1].file_id, destination=f_path)
     logger.info(f'{f_path} получен')
 
-    # await photo.download()
-    # res_f_name = await process_input(f_path)
-    # res_f_name = 'empty'
-    # logger.info(f'{res_f_name} сохранен')
-    # await message.answer(res_f_name)
-    # await message.reply_photo(message.photo[-1].file_id) # reply_to_message_id
-
 @dp.message()
 async def process_other_messages(message: Message):
     await message.reply('Жду картинку в низком разрешении')
-
-'''
-import asyncio
-from asyncio import Semaphore
-#from concurrent.futures import ThreadPoolExecutor
-
-async def process_image(f_path):
-    logger.info(f'process {f_path}')
-    res_f_name = await async_process_input(f_path)
-
-
-async def check_images(img_path: str = RESULT_FOLDER) -> None:
-    MAX_N_THREADS = 3
-    while True:
-        img_list = os.listdir(img_path)
-        if len(img_list)==0:
-            await asyncio.sleep(5)
-        n_threads = min(MAX_N_THREADS, len(img_list))
-        with ThreadPoolExecutor(max_workers=n_threads) as executor:
-            f_path = [os.path.join(img_path, img_list[i])]
-            executor.map(process_image,f_path)
-'''
 
 
 
