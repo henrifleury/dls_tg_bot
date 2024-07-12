@@ -49,11 +49,12 @@ async def task_wrapper(semaphore: Semaphore, f_path, *args):
 
 
 async def main(img_dir=RESULT_FOLDER, max_n_threads=MAX_N_THREADS, wrapper=task_wrapper, delay=DELAY):
+    logger.info(f'{__name__} startung')
     semaphore = Semaphore(max_n_threads)
     while True:
         img_list = sorted(await listdir(img_dir))
         if len(img_list) == 0:
-            logger.info(f'delay {delay}')
+            #logger.info(f'delay {delay}')
             await asyncio.sleep(delay)
             continue
         threads_nbr = min(MAX_N_THREADS, len(img_list))

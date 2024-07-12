@@ -31,11 +31,12 @@ async def task_wrapper(semaphore: Semaphore, f_path, *args):
 
 
 async def main():
+    logger.info('resolutor starting')
     semaphore = Semaphore(MAX_N_THREADS)
     while True:
         img_list = sorted(await listdir(UPLOAD_FOLDER))
         if len(img_list) == 0:
-            logger.info(f'delay {DELAY}')
+            #logger.info(f'delay {DELAY}')
             await asyncio.sleep(DELAY)
             continue
         max_threads_nbr = min(MAX_N_THREADS, len(img_list))
@@ -51,6 +52,7 @@ async def main():
 
 
 if __name__ == "__main__":
+
     asyncio.run(main())
 
 

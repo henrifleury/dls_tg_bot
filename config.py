@@ -6,4 +6,4 @@ API_URL = 'https://api.telegram.org/bot'
 LOG_LEVEL = 'INFO'
 
 SENDER_MAX_N_THREADS = 3
-SENDER_DELAY = 5
+SENDER_DELAY = 3
