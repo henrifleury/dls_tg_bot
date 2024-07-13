@@ -34,23 +34,29 @@ dp = Dispatcher()
 @dp.message(Command(commands=["start"]))
 async def process_start_command(message: Message):
     await message.answer(
-        'Привет, это бот-улучшатель изображений. Пришли картинку и я попробую в 2 раза увеличить ее разрешение')
+        'Привет, это бот-улучшатель изображений. Пришли картинку и я попробую/'
+        ' в 2 раза увеличить ее разрешение')
+
 
 @dp.message(Command(commands=["help"]))
 async def process_help_command(message: Message):
-    await message.answer('Пришли картинку и я попробую в 2 раза увеличить ее разрешение')
+    await message.answer('Пришли картинку и я попробую в 2 раза увеличить ее/'
+                         ' разрешение')
 
-#bot save all images
+
 @dp.message(F.content_type == ContentType.PHOTO)
 async def process_photo(message: Message):
-    f_path = f"{UPLOAD_FOLDER}/{time()}_{message.message_id}_{message.chat.id}_{message.photo[-1].file_id}.jpg"
+    f_path = f"{UPLOAD_FOLDER}/{time()}_{message.message_id}"
+    f_path += f"_{message.chat.id}_{message.photo[-1].file_id}.jpg"
     await bot.download(file=message.photo[-1].file_id, destination=f_path)
     img_list = await listdir(UPLOAD_FOLDER)
-    q_len =len(img_list)
-    if q_len>1:
-        await message.answer(f'Ждите ответа, в очереди на увеличение разрешения {q_len} файлов')
+    q_len = len(img_list)
+    if q_len > 1:
+        await message.answer(f'Ждите ответа, в очереди на увеличение/'
+                             f' разрешения {q_len} файлов')
 
     logger.info(f'{f_path} получен')
+
 
 @dp.message()
 async def process_other_messages(message: Message):

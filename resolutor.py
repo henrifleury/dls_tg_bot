@@ -5,7 +5,7 @@ import logging
 from models.Real_ESRGAN import process_input
 from aiofiles.os import remove, listdir
 
-from config import UPLOAD_FOLDER, RESULT_FOLDER, LOG_LEVEL
+from config import UPLOAD_FOLDER, LOG_LEVEL  # RESULT_FOLDER,
 
 logging.basicConfig(level=LOG_LEVEL)
 logger = logging.getLogger(__name__)
@@ -13,13 +13,14 @@ logger = logging.getLogger(__name__)
 MAX_N_THREADS = 3
 DELAY = 5
 
+
 async def task_wrapper(semaphore: Semaphore, f_path, *args):
     await semaphore.acquire()
     try:
         # new_f_path = await async_process_input(f_path)
         new_f_path = process_input(f_path)
-        # TODO check file size and raise exception if > 10Mb/4 (tg limit 10Mb - will not be send)
-        # TODO
+        # TODO check file size and raise exception if > 10Mb/4
+        # TODO (tg limit 10Mb - will not be send)
         logger.info(f'{f_path} processed to {new_f_path}')
         await remove(f_path)
         logger.info(f'{f_path} deleted')
@@ -36,12 +37,12 @@ async def main():
     while True:
         img_list = sorted(await listdir(UPLOAD_FOLDER))
         if len(img_list) == 0:
-            #logger.info(f'delay {DELAY}')
             await asyncio.sleep(DELAY)
             continue
         max_threads_nbr = min(MAX_N_THREADS, len(img_list))
         tasks = []
-        logger.info(f'start processing list: {img_list[:max_threads_nbr]}, {len(img_list)} images in queue')
+        logger.info(f'start processing list: {img_list[:max_threads_nbr]},'
+                    f' {len(img_list)} images in queue')
         for f_name in img_list[:max_threads_nbr]:
             f_path = os.path.join(UPLOAD_FOLDER, f_name)
             task = asyncio.create_task(task_wrapper(semaphore, f_path))
