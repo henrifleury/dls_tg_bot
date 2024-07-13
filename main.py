@@ -52,8 +52,8 @@ async def process_photo(message: Message):
     img_list = await listdir(UPLOAD_FOLDER)
     q_len = len(img_list)
     if q_len > 1:
-        await message.answer(f'Ждите ответа, в очереди на увеличение/'
-                             f' разрешения {q_len} файлов')
+        await message.answer(f'Ждите ответа, в очереди на увеличение'
+                             f' разрешения {q_len} файла(ов)')
 
     logger.info(f'{f_path} получен')
 
